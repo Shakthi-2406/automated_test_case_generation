@@ -24,7 +24,7 @@ div[data-baseweb="input-container"] textarea {
 st.title("Test Case Generator")
 
 # Create placeholders for user input
-FRD_input = st.text_area('''Enter the FRD (Functional Requirement Document):''', '''\n     Auto_Drift_Estimate - [enabled, not_enabled]
+FRD_input = st.text_area('''Enter the FRD (Functional Requirement Document):''', '''     Auto_Drift_Estimate - [enabled, not_enabled]
     a0 - [1, 2, 1]
     a1 - [2, 2, 1]
     a2 - [3, 5, 1]
