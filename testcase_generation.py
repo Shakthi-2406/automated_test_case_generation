@@ -235,14 +235,14 @@ def fill_dependant_variables(dependant_variables, equations_dict, test_cases_df,
                 calculation_pre_requisites = equation_info['calculation_pre_requisites']
                 condition_pre_requisites = equation_info['condition_pre_requisites'] 
 
+                try:
                 # Check if condition matches
-                if not condition or eval(condition, row[:].to_dict()):
-                    # Calculate value using eval
-                    try:
-                        calculated_value = eval(equation_rhs, namespace, row[:].to_dict())
-                        test_cases_df.at[index, variable] = calculated_value
-                        break  
-                    except:
+                    if not condition or eval(condition, row[:].to_dict()):
+                        # Calculate value using eval
+                            calculated_value = eval(equation_rhs, namespace, row[:].to_dict())
+                            test_cases_df.at[index, variable] = calculated_value
+                            break  
+                except:
                         print(f'Eval failed for {equation_rhs}')
                         print(equation_rhs, row[calculation_pre_requisites].to_dict())
     return test_cases_df

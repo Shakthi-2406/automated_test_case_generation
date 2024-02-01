@@ -88,7 +88,7 @@ data = {
 "equations" : [{'equation' : 'b = 2*d', 'condition': None}, {'equation':  'a = b+c', 'condition': 'b>0'} .... {}]}
 You are going to analyse the document, identify ALL the variables present, ALL the equations present.
 For the equations, all the conditions and equation should be a python executable command or line which can be executed by eval.
-Give equations in the order of their executions. Use None instead of null.
+Give equations in the order of their executions. Use None instead of null. Identify ALL the variables present.
 Give the output in the specified JSON format.'''
         },
         {
