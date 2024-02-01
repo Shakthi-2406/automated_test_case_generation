@@ -119,7 +119,6 @@ if st.button("Generate Test Cases"):
         label="Download Test Cases as CSV",
         data=test_cases_df.to_csv(index=False).encode('utf-8'),
         file_name='test_cases_generated.csv',
-        key="download_csv"
     )
     
     # Download button for HTML format
@@ -127,6 +126,5 @@ if st.button("Generate Test Cases"):
         label="Download Test Cases as HTML",
         data=test_cases_df.to_html(index=False),
         file_name='test_cases_generated.html',
-        key="download_html"
     )
 
