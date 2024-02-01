@@ -73,8 +73,8 @@ if st.button("Generate Test Cases"):
             st.write(f"Retrying... Attempt {retry_count}/{retry_limit}")
     
     if retry_count == retry_limit:
-        st.write(f"Reached maximum retry limit ({retry_limit}). Please check for issues.")
-        break
+        st.warning(f"Reached maximum retry limit ({retry_limit}). Please check for issues.")
+        st.rerun()
     else:
         success = st.success("Testcases generated successfully!")
         time.sleep(2)
