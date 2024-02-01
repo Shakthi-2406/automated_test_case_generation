@@ -87,7 +87,7 @@ data = {
 {"variables" : ['a', 'b',....],
 "equations" : [{'equation' : 'b = 2*d', 'condition': None}, {'equation':  'a = b+c', 'condition': 'b>0'} .... {}]}
 You are going to analyse the document, identify ALL the variables present, ALL the equations present.
-Give equations in the order of their executions. 
+Give equations in the order of their executions. Use None instead of null.
 Give the output in the specified JSON format.'''
         },
         {
