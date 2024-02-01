@@ -2,6 +2,12 @@ import streamlit as st
 import pandas as pd
 from few_shot_prompting import get_few_shot_prompting_response as get_few_shot_response
 from testcase_generation import *
+import streamlit_ext as ste
+
+st.set_page_config(
+    page_title="TestCaseGenerator",
+    page_icon="🚀"
+)
 
 st.markdown("""
 <style>
@@ -19,8 +25,8 @@ st.title("Test Case Generator")
 
 # Create placeholders for user input
 FRD_input = st.text_area("Enter the FRD (Functional Requirement Document):", placeholder="Copy and paste FRD here...", height=300)
-edge_cases_only = st.checkbox("Edge Cases Only", True)
-limit = st.slider("Test cases count", min_value=50, max_value=1000, value=50)
+edge_cases_only = ste.checkbox("Edge Cases Only", True)
+limit = ste.slider("Test cases count", min_value=50, max_value=1000, value=50)
 
 if st.button("Generate Test Cases"):
     edges = []
@@ -28,7 +34,7 @@ if st.button("Generate Test Cases"):
     namespace = {}
     flowchart_data = []
 
-    with st.spinner("Generating Testcases..."):
+    with st.spinner("Generating Testcases... Please wait a minute..."):
         dict_from_few_shot_prompting = get_few_shot_response(FRD=FRD_input)
     
     # extracting the necessary details from few shot prompting api call 
@@ -38,7 +44,7 @@ if st.button("Generate Test Cases"):
     independant_variables = [var for var in ranges.keys()]
     
     dependant_variables = process_dependant_variables(equations)
-    add_ranges_for_miscellaneous(variables, dependant_variables, independant_variables, ranges)
+    add_ranges_for_miscellaneous(variables, dependant_variables, independant_variables, ranges, streamlit=True)
 
     # pre processing
     pre_process_equations(equations)
@@ -79,31 +85,16 @@ if st.button("Generate Test Cases"):
     # Filling the test cases dataframe and displaying it
     test_cases_df = fill_dependant_variables(dependant_variables, equations_dict, test_cases_df, namespace)
     st.header("Generated Test Cases:")
-    st.dataframe(test_cases_df, height=300)
+    st.dataframe(test_cases_df, height=800)
     
     # Describe Data Frame
-    st.dataframe(test_cases_df.describe(include = 'all').T, width=500)
+    st.dataframe(test_cases_df.describe(include = 'all').T, width=800)
     
     # Display Statistics
     statistics = get_styled_html_statistics(dependant_variables, test_cases_df)
     st.header("Statistics:")
     st.markdown(statistics, unsafe_allow_html=True)
     
-    # Download button for CSV format
-    st.download_button(
-        label="Download Test Cases as CSV",
-        data=test_cases_df.to_csv(index=False).encode('utf-8'),
-        file_name='test_cases_generated.csv',
-        key="download_csv"
-    )
-    
-    # Download button for HTML format
-    st.download_button(
-        label="Download Test Cases as HTML",
-        data=test_cases_df.to_html(index=False),
-        file_name='test_cases_generated.html',
-        key="download_html"
-    )
     
     # # Download button for excel
     # st.download_button(
@@ -119,7 +110,23 @@ if st.button("Generate Test Cases"):
     identify_dependancy_trend(dependant_variables, equations_dict, test_cases_df, streamlit=True)
     
     initialize_edge_and_labels(edges, edge_labels, equations_dict)
+    create_graph_image(edges, edge_labels, streamlit=True) 
+    
     create_interactive_graph(edges, streamlit=True)
     
-    # create_graph_image(edges, edge_labels) 
+    # Download button for CSV format
+    ste.download_button(
+        label="Download Test Cases as CSV",
+        data=test_cases_df.to_csv(index=False).encode('utf-8'),
+        file_name='test_cases_generated.csv',
+        key="download_csv"
+    )
+    
+    # Download button for HTML format
+    ste.download_button(
+        label="Download Test Cases as HTML",
+        data=test_cases_df.to_html(index=False),
+        file_name='test_cases_generated.html',
+        key="download_html"
+    )
 

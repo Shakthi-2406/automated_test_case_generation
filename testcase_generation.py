@@ -103,7 +103,7 @@ def topological_sort(dependant_variables, equations_dict):
 
     return sorted_variables
 
-def add_ranges_for_miscellaneous(variables, dependant_variables, independant_variables, ranges):
+def add_ranges_for_miscellaneous(variables, dependant_variables, independant_variables, ranges, streamlit=False):
     miscellaneous_variables = [var for var in variables if var not in dependant_variables and var not in independant_variables]
     if len(miscellaneous_variables) > 0:
         warning = f'Variable/s missing for implementation: {miscellaneous_variables}'
@@ -118,6 +118,8 @@ def add_ranges_for_miscellaneous(variables, dependant_variables, independant_var
             ranges[miscellaneous_variable] = [start, end, step]
             warnings.warn(warning)
             independant_variables.append(miscellaneous_variable)
+            if streamlit:
+                st.warning(f'Assuming values for {miscellaneous_variable} as {start} to {end} with step {step}', icon='⚠️')
 
 def process_dependant_variables(equations):
     dependant_variables = []
@@ -321,6 +323,7 @@ def create_interactive_graph(edges, streamlit=False):
     for edge in edges:
         G.add_node(edge[0])
         G.add_node(edge[3])
+        G.nodes[edge[3]]['color'] = 'red'
 
     for edge in edges:
         G.add_edge(edge[0], edge[3], label=edge[2])
@@ -329,28 +332,28 @@ def create_interactive_graph(edges, streamlit=False):
     fig = gv.d3(G, show_edge_label=True, edge_label_data_source='label',
         layout_algorithm_active=True,
         use_collision_force=True,
-        collision_force_radius=60,
+        collision_force_radius=70,
         edge_label_rotation=0,
-        edge_label_size_factor=1,
-        edge_label_font='bold',
+        edge_label_size_factor=0.7,
+        edge_label_font='monospace',
         zoom_factor=1.5,
         many_body_force_strength=10)
     
     if streamlit:
-        components.html(fig.to_html(), height=600)
+        components.html(fig.to_html(), height=700)
     
 # create graph image
-def create_graph_image(edges, edge_labels):
+def create_graph_image(edges, edge_labels, streamlit=False):
     try:
         edge_label_index = 2
         G = nx.DiGraph(directed=True)
 
         for edge in edges:
             G.add_node(edge[0])
-            G.add_node(edge[edge_label_index])
+            G.add_node(edge[1])
         for edge in edges:
-            G.add_edge(edge[0], edge[edge_label_index], label=edge[2])
-            G.edges[edge[0], edge[edge_label_index]].update({'label': edge[2]})
+            G.add_edge(edge[0], edge[1], label=edge[2])
+            G.edges[edge[0], edge[1]].update({'label': edge[2]})
         
         pos = nx.spring_layout(G)
         options = {
@@ -361,12 +364,16 @@ def create_graph_image(edges, edge_labels):
             'arrowsize': 12,
             'labels' : {node: node for node in G.nodes()}
         }
+        fig, ax = plt.subplots()
         nx.draw_networkx(G, pos, arrows=True, **options)
         nx.draw_networkx_edge_labels(
             G, pos,
             edge_labels=edge_labels,
             font_color='red'
         )
+        if streamlit:
+            st.pyplot(fig)
+        plt.close(fig)
     except:
         pass
 
