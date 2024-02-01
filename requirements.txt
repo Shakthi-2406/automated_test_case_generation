@@ -5,3 +5,4 @@ graphviz
 networkx
 gravis
 requests
+matplotlib
