@@ -128,11 +128,12 @@ if st.button("Generate Test Cases"):
     #     key="download_html"
     # )  
     
-    
-    show_variable_trend(dependant_variables, test_cases_df, streamlit=True)
-    
-    identify_dependancy_trend(dependant_variables, equations_dict, test_cases_df, streamlit=True)
-    
+    try:
+        show_variable_trend(dependant_variables, test_cases_df, streamlit=True)
+        identify_dependancy_trend(dependant_variables, equations_dict, test_cases_df, streamlit=True)
+    except:
+        st.write('There was some error with rendering the variable trend')
+            
     initialize_edge_and_labels(edges, edge_labels, equations_dict)
     create_graph_image(edges, edge_labels, streamlit=True) 
     
