@@ -24,7 +24,7 @@ div[data-baseweb="input-container"] textarea {
 st.title("Test Case Generator")
 
 # Create placeholders for user input
-FRD_input = st.text_area('''Enter the FRD (Functional Requirement Document): For sample, you can use \n     Auto_Drift_Estimate - [enabled, not_enabled]
+FRD_input = st.text_area('''Enter the FRD (Functional Requirement Document):''', '''\n     Auto_Drift_Estimate - [enabled, not_enabled]
     a0 - [1, 2, 1]
     a1 - [2, 2, 1]
     a2 - [3, 5, 1]
@@ -47,7 +47,7 @@ FRD_input = st.text_area('''Enter the FRD (Functional Requirement Document): For
     The above logic shall be computed every 7 sec as the temperature reading shall happen every 7 sec.
     deltaf = f0 * delfbyf0
     new_time_period = 1/(f0 + deltaf)
-    delta_time_period = new_time_period - t0''', placeholder="Copy and paste FRD here...", height=300)
+    delta_time_period = new_time_period - t0''',placeholder="Copy and paste FRD here...", height=300)
 
 edge_cases_only = ste.checkbox("Edge Cases Only", True)
 limit = ste.slider("Test cases count", min_value=50, max_value=1000, value=50)
