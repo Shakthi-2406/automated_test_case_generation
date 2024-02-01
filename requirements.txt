@@ -5,4 +5,3 @@ graphviz
 networkx
 gravis
 requests
-shutil
