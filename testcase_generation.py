@@ -340,7 +340,7 @@ def create_interactive_graph(edges, streamlit=False):
         many_body_force_strength=10)
     
     if streamlit:
-        components.html(fig.to_html(), height=700)
+        components.html(fig.to_html(), height=600)
     
 # create graph image
 def create_graph_image(edges, edge_labels, streamlit=False):
