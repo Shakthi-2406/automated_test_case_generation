@@ -1,3 +1,4 @@
+import time
 import streamlit as st
 import pandas as pd
 from few_shot_prompting import get_few_shot_prompting_response as get_few_shot_response
@@ -57,9 +58,27 @@ if st.button("Generate Test Cases"):
     edge_labels = {}
     namespace = {}
     flowchart_data = []
-
-    with st.spinner("Generating Testcases... Please wait a minute..."):
-        dict_from_few_shot_prompting = get_few_shot_response(FRD=FRD_input)
+    
+    retry_limit = 5
+    retry_count = 0
+    
+    while retry_count < retry_limit:
+        try:
+            with st.spinner("Generating Testcases... Please wait a minute..."):
+                dict_from_few_shot_prompting = get_few_shot_response(FRD=FRD_input)
+            break
+        except Exception as e:
+            retry_count += 1
+            st.write(f"An error occurred: {str(e)}")
+            st.write(f"Retrying... Attempt {retry_count}/{retry_limit}")
+    
+    if retry_count == retry_limit:
+        st.write(f"Reached maximum retry limit ({retry_limit}). Please check for issues.")
+        break
+    else:
+        success = st.success("Testcases generated successfully!")
+        time.sleep(2)
+        success.empty()
     
     # extracting the necessary details from few shot prompting api call 
     variables = dict_from_few_shot_prompting['variables']
