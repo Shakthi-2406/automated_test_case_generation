@@ -1,0 +1,8 @@
+streamlit
+pandas
+streamlit_ext
+graphviz
+networkx
+gravis
+requests
+shutil

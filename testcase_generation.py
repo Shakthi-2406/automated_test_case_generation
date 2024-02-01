@@ -119,7 +119,7 @@ def add_ranges_for_miscellaneous(variables, dependant_variables, independant_var
             warnings.warn(warning)
             independant_variables.append(miscellaneous_variable)
             if streamlit:
-                st.warning(f'Assuming values for {miscellaneous_variable} as {start} to {end} with step {step}', icon='⚠️')
+                st.warning(f' Warning: Assuming values for {miscellaneous_variable} as {start} to {end} with step {step}', icon='⚠️')
 
 def process_dependant_variables(equations):
     dependant_variables = []
