@@ -191,7 +191,6 @@ def get_few_shot_prompting_response(FRD):
         
     # FRD = pre_process(FRD)
     data_copy['messages'][2]['content'] = data_copy['messages'][2]['content'].format(FRD)
-    range_data_copy['messages'][2]['content'] = range_data_copy['messages'][2]['content'].format(part1)
     
     response = requests.post(url, headers=headers, json=data_copy)
     response_dict = response.json()
@@ -199,13 +198,17 @@ def get_few_shot_prompting_response(FRD):
 
     few_shot_response = eval(dict_string)
     
-    response = requests.post(url, headers=headers, json=range_data_copy)
-    response_dict = response.json()
-    dict_string = response_dict['responseText'][response_dict['responseText'].find('{'):response_dict['responseText'].rfind('}')+1]
-    
-    ranges_few_shot_response = eval(dict_string)
+    if FRD.find('_RANGE_END_TAG_') != -1:
+      range_data_copy['messages'][2]['content'] = range_data_copy['messages'][2]['content'].format(part1)
+      response = requests.post(url, headers=headers, json=range_data_copy)
+      response_dict = response.json()
+      dict_string = response_dict['responseText'][response_dict['responseText'].find('{'):response_dict['responseText'].rfind('}')+1]
 
-    few_shot_response.update(ranges_few_shot_response)
+      ranges_few_shot_response = eval(dict_string)
+
+      few_shot_response.update(ranges_few_shot_response)
+    else:
+      few_shot_response['ranges'] = {}
     
     pprint.pprint(few_shot_response)
     return few_shot_response
