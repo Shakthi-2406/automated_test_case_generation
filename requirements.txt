@@ -6,3 +6,5 @@ networkx
 gravis
 requests
 matplotlib
+transformers
+torch
