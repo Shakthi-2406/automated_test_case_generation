@@ -67,7 +67,7 @@ if st.button("Generate Test Cases"):
             with st.spinner("Generating Testcases... Please wait a minute..."):
                 dict_from_few_shot_prompting = get_few_shot_response(FRD=FRD_input)
             break
-        except Exception as e:
+        except ZeroDivisionError as e:
             retry_count += 1
             st.write(f"An error occurred: {str(e)}")
             st.write(f"Retrying... Attempt {retry_count}/{retry_limit}")
