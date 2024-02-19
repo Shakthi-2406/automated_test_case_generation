@@ -6,7 +6,7 @@ import copy
 
 url = 'https://api.getknit.ai/v1/router/run'
 headers = {
-    'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMTAwNzI1NTA4NDU2MTk5OTc4ODAzIn0sImlhdCI6MTcwNjQ3MTQzMCwiZXhwIjoxNzA3NTUxNDMwfQ.7e8C-gU0fsaOH6o5Pno5xQILfljYJM_Wd6bb-OhUCWE',
+    'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMTAwNzU3MDAyMzM5NTUwNTczOTAxIn0sImlhdCI6MTcwODM0NTYwOCwiZXhwIjoxNzA5NDI1NjA4fQ.Dhstn2f-FYKwgnX6FEaDltYEyGzY0N5tIsj5akStqEw',
     'Content-Type': 'application/json'
 }
 
@@ -195,6 +195,7 @@ def get_few_shot_prompting_response(FRD):
     
     response = requests.post(url, headers=headers, json=data_copy)
     response_dict = response.json()
+    print(response_dict)
     dict_string = response_dict['responseText'][response_dict['responseText'].find('{'):response_dict['responseText'].rfind('}')+1]
 
     few_shot_response = eval(dict_string)
