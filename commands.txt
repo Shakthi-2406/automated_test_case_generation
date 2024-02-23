@@ -1,4 +1,4 @@
-pip freeze > requirements_new.txt
+pip freeze > requirements.txt
 pip download -r requirements.txt -d wheel_files
 pip wheel -r requirements.txt --wheel-dir=wheel_files
 pip install --no-index --find-links=wheel_files -r requirements.txt

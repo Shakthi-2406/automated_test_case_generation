@@ -1,2 +1,4 @@
 .isro
 .env
+.devcontainer
+llama-2-7b.ggmlv3.q8_0.bin
