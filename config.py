@@ -57,15 +57,17 @@ equation_example = """{"variables" : ['a', 'b',....],
 }"""
 
 equation_input_frd = """
-Auto_drift - [0, 1, 0.5]
-operation - ["fight", "no"]
-curvature - [100, 102, 1]
+{
+'Auto_drift' : (0, 1, 0.5), 
+'operation' : ("fight", "no"),
+'curvature' : (100, 102, 1)
+}
 _RANGE_END_TAG_
 
 beta = 100
 temp0 = 40 deg
-If Auto_drift is 0,
-then beam = curvature + 5 + temp
+If Auto_drift is 0 and operation is fight,
+then beam = curvature + 5 + temp0
 else,
 beam = curvature * 5
 """
@@ -77,7 +79,7 @@ equation_output_frd = """
 {'equation': 'beta = 100', 'condition': None}, 
 {'equation': 'temp0 = 40', 'condition': None}, 
 {'equation': 'beam = curvature + 5 + temp', 'condition': 'Auto_drift == 0 and operation == "fight"'}, 
-{'equation':  'beam = curvature * 5', 'condition': 'Auto_drift != 0'} 
+{'equation':  'beam = curvature * 5', 'condition': 'Auto_drift != 0 or operation != "fight"'} 
 ]
 }
 """
@@ -116,9 +118,11 @@ curvature - [100, 102, 1]
 """
 
 range_output_frd = """
+```json{
 'Auto_drift' : (0, 1, 0.5), 
 'operation' : ("fight", "no"),
 'curvature' : (100, 102, 1)
+}```
 """
 
 RANGE_SYS_PROMPT_TEMPLATE = """

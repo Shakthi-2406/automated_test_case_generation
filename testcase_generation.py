@@ -272,6 +272,7 @@ def delete_directory_contents(directory_path):
         
 
 def create_flow_graph(flowchart_data, directory_path, equations_dict):
+    print(flowchart_data, equations_dict)
     flowchart_groups = {}
     delete_directory_contents(directory_path)
     
@@ -300,6 +301,52 @@ def create_flow_graph(flowchart_data, directory_path, equations_dict):
         graph.render(filename=flowchart_name, format='png', cleanup=True)
         graph_index += 1
         flowchart_path = flowchart_name + '.png'
+
+
+def create_new_flow_graph(flowchart_data, directory_path, equations_dict):
+    print(flowchart_data, equations_dict)
+    flowchart_groups = {}
+    delete_directory_contents(directory_path)
+    
+    for var, equations in equations_dict.items():
+        for equation in equations:
+            pre_req_vars = equation['condition_pre_requisites']
+            key = list(set(sorted(pre_req_vars + [var])))
+
+            if var not in flowchart_groups:
+                flowchart_groups[var] = []
+
+            flowchart_groups[var].append((pre_req_vars, var, equation['equation'], equation['condition']))
+
+    graph_index = 1
+    flowchart_name = f'{directory_path}/{graph_index}'
+    
+    graph = graphviz.Digraph(flowchart_name, format='png')
+    graph.attr('graph', rankdir='TB')
+
+    graph_nodes = {}
+    for var, flowchart_data_group in flowchart_groups.items():
+
+        for pre_req_vars, var, equation, condition in flowchart_data_group:
+            graph.node(equation)
+            if var not in graph_nodes:
+                graph_nodes[var] = []
+            graph_nodes[var].append(equation)
+            
+        for pre_req_vars, var, equation, condition in flowchart_data_group:
+            for node_from in pre_req_vars:
+                if node_from not in graph_nodes:
+                    graph.node(node_from)
+                    graph_nodes[node_from] = [node_from]
+
+                for node_from_store in graph_nodes[node_from]:
+                    graph.edge(node_from_store, equation, label=condition)
+    graph.node("a")
+    graph.edge("a", "b")
+    graph.edge("a", "c")
+    graph.render(filename=flowchart_name, format='png', cleanup=True)
+    graph_index += 1
+    flowchart_path = flowchart_name + '.png'
 
 
 # initialize edge and edge labels

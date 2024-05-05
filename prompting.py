@@ -13,10 +13,10 @@ llm = CTransformers(
             }
         )
 
-
 def get_equation_dict(frd_document):
     prompt = PromptTemplate(
-        input_variables=["input_frd","output_frd","document","example","output_condition"], template=EQUATION_PROMPT_TEMPLATE
+        input_variables=["input_frd","output_frd","document","example","output_condition"], 
+        template=EQUATION_PROMPT_TEMPLATE
     )
     formatted_prompt = prompt.format_prompt(
                      input_frd=equation_input_frd,

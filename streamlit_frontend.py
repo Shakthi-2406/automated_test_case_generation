@@ -106,7 +106,7 @@ if st.button("Generate Test Cases"):
     print(variables)
     
     # Display Flowcharts
-    create_flow_graph(flowchart_data=flowchart_data,
+    create_new_flow_graph(flowchart_data=flowchart_data,
                       directory_path='flowchart',
                       equations_dict=equations_dict)  
     image_directory = "flowchart"

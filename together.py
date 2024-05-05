@@ -2,7 +2,6 @@ import requests
 import json
 import pprint
 import copy
-from config import *
 
 
 url = 'https://api.getknit.ai/v1/router/run'
@@ -11,65 +10,63 @@ headers = {
     'Content-Type': 'application/json'
 }
 
-ranges_system_prompt = '''
-You are a python json range generator.
-You will be given a part of functional requirement document of a satellite.
-Each line of the document has the following structure - variable name - [start value, end value, step value (optional)]
-Your task is to analyse the given document.
-- Identify ALL the range values.
-- ALL the range values should be ONLY BE CONSTANTS (RAW VALUES of string or int or float).
-- Ignore the units like sec, m, deg if present.
-- ALL values ranges should be assignable to a python variable without any error.
-- You will be given example input document and example output JSON.
-- The key-value pairs of the output json should be 'variable_name':tuple(start, end, step(optional))
-You have to return the output in the following JSON format.
-    Example 1:
-    Input document: "
-    Auto_drift - [0, 1, 0.5]
-    operation - ["fight", "no"]
-    curvature - [100, 102, 1]
-    "
-
-    Output:
-      ```json
-      {
-                'Auto_drift' : (0, 1, 0.5), 
-                'operation' : ("fight", "no"),
-                'curvature' : (100, 102, 1)
-      }```
-
-    Example 2:
-    Input document: "
-    speed - [50, 100, 20]
-    acceleration - [0, 5, 2] 
-    "
-    
-    Output:
-    ```json{
-        "speed": [50, 100, 20],
-        "acceleration": [0, 5, 2]
-      }
-    ```
-
-    Example 3:
-    Input Document:
-    "
-    temperature - [-10, 50, 10]
-    humidity - [30, 70, 8]
-    "
-    Output:
-    ```json{
-        "temperature": [-10, 50, 10],
-        "humidity": [30, 70, 8]
-      }```
-'''
-
-
 range_data = {
     "messages": [
         {
             "role": "system",
-            "content": ranges_system_prompt
+            "content": '''You have to analyse the given Functional requirement document snippet and going to return me a json of this format 
+{"ranges": {'d' : (2, 100, 3), 'mode' : ("on", "off"), 'temp' : (3, 7, 1), ... } }
+You are going to analyse the document, identify ALL the range values should ONLY BE CONSTANTS (RAW VALUES of string or int or float).
+Ignore the units like sec, m, deg if present. Give the output in the specified JSON format.'''
+        },
+        {
+            "role": "assistant",
+            "content": '''
+                Example 1:
+                Input document: "
+                Auto_drift - [0, 1, 0.5]
+                operation - ["fight", "no"]
+                curvature - [100, 102, 1]
+                "
+
+                Output:
+                {
+                 "ranges": {
+                           'Auto_drift' : (0, 1, 0.5), 
+                           'operation' : ("fight", "no"),
+                           'curvature' : (100, 102, 1)
+                   }
+                 }
+
+                Example 2:
+                Input document: "
+                speed - [50, 100, 20]
+                acceleration - [0, 5, 2] 
+                "
+                
+                Output:
+                {
+                  "ranges": {
+                    "speed": [50, 100, 20],
+                    "acceleration": [0, 5, 2]
+                  }
+                }
+
+                Example 3:
+                Input Document:
+                "
+                temperature - [-10, 50, 10]
+                humidity - [30, 70, 8]
+                "
+                Output:
+                {
+                  "ranges": {
+                    "temperature": [-10, 50, 10],
+                    "humidity": [30, 70, 8]
+                  }
+                }
+
+            '''
         },
         {
             "role": "user",
@@ -82,18 +79,22 @@ range_data = {
     "variables": []
 }
 
-equations_system_prompt = '''
-You are a python equation generator.
-You will be given a functional requirement document of a satellite.
-The document will contain conditions and equations of technicalities related to satellites in natural language.
-Your task is to analyse the given document.
-- Identify ALL the variables present and ALL the equations present in the document.
-- For the equations, all the conditions and equation should be a python executable command or line which can be executed by eval.
-- Give equations in the order of their executions. Use None instead of null. Identify ALL the variables present.
-- You will be given example input document and example output JSON.
-You have to return the output in the following JSON format.
-
-Example 1:
+data = {
+    "messages": [
+        {
+            "role": "system",
+            "content": '''You have to analyse the given Functional requirement document snippet and going to return me a json of this format 
+{"variables" : ['a', 'b',....],
+"equations" : [{'equation' : 'b = 2*d', 'condition': None}, {'equation':  'a = b+c', 'condition': 'b>0'} .... {}]}
+You are going to analyse the document, identify ALL the variables present, ALL the equations present.
+For the equations, all the conditions and equation should be a python executable command or line which can be executed by eval.
+Give equations in the order of their executions. Use None instead of null. Identify ALL the variables present.
+Give the output in the specified JSON format.'''
+        },
+        {
+            "role": "assistant",
+            "content": '''
+                Example 1:
                 Input document: "
                 Auto_drift - [0, 1, 0.5]
                 operation - ["fight", "no"]
@@ -161,17 +162,12 @@ Example 1:
                     {"equation": 'weather = "Moderate"', "condition": "not (temperature < 0 and humidity > 50)"}
                   ]
                 }
-'''
 
-data = {
-    "messages": [
-        {
-            "role": "system",
-            "content": equations_system_prompt
+            '''
         },
         {
             "role": "user",
-            "content": '''Please Generate output for the input document: {}'''
+            "content": '''Now generate output for the input document: {}'''
         }
     ],
     "model": {
