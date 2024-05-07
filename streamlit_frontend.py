@@ -51,7 +51,7 @@ FRD_input = st.text_area('''Enter the FRD (Functional Requirement Document):''',
     delta_time_period = new_time_period - t0''',placeholder="Copy and paste FRD here...", height=300)
 
 edge_cases_only = ste.checkbox("Edge Cases Only", True)
-limit = ste.slider("Test cases count", min_value=50, max_value=1000, value=50)
+limit = ste.slider("Test cases count", min_value=10, max_value=1000, value=50)
 
 if st.button("Generate Test Cases"):
     edges = []

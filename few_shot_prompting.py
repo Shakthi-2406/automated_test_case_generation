@@ -4,6 +4,7 @@ import pprint
 import copy
 from config import *
 
+model_name = "openai/gpt-4-1106-preview"
 
 url = 'https://api.getknit.ai/v1/router/run'
 headers = {
@@ -77,7 +78,7 @@ range_data = {
         }
     ],
     "model": {
-	    "name": "openai/gpt-4-1106-preview"
+	    "name": model_name
     },
     "variables": []
 }
@@ -175,7 +176,7 @@ data = {
         }
     ],
     "model": {
-	    "name": "openai/gpt-4-1106-preview"
+	    "name": model_name
     },
     "variables": []
 }
@@ -195,7 +196,7 @@ def get_few_shot_prompting_response(FRD):
     range_data_copy = copy.deepcopy(range_data)
         
     # FRD = pre_process(FRD)
-    data_copy['messages'][2]['content'] = data_copy['messages'][2]['content'].format(FRD)
+    data_copy['messages'][1]['content'] = data_copy['messages'][1]['content'].format(FRD)
     
     response = requests.post(url, headers=headers, json=data_copy)
     response_dict = response.json()
@@ -205,14 +206,14 @@ def get_few_shot_prompting_response(FRD):
     few_shot_response = eval(dict_string)
     
     if FRD.find('_RANGE_END_TAG_') != -1:
-      range_data_copy['messages'][2]['content'] = range_data_copy['messages'][2]['content'].format(part1)
+      range_data_copy['messages'][1]['content'] = range_data_copy['messages'][1]['content'].format(part1)
       response = requests.post(url, headers=headers, json=range_data_copy)
       response_dict = response.json()
       dict_string = response_dict['responseText'][response_dict['responseText'].find('{'):response_dict['responseText'].rfind('}')+1]
 
       ranges_few_shot_response = eval(dict_string)
 
-      few_shot_response.update(ranges_few_shot_response)
+      few_shot_response['ranges'] = ranges_few_shot_response
     else:
       few_shot_response['ranges'] = {}
     
