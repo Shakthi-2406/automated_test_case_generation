@@ -8,7 +8,7 @@ model_name = "openai/gpt-4-1106-preview"
 
 url = 'https://api.getknit.ai/v1/router/run'
 headers = {
-    'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMTEzMjcyNTc0OTM0MjAyMDAzMzE4In0sImlhdCI6MTcxNDQ2MjQzMywiZXhwIjoxNzE1NTQyNDMzfQ.5N23ymdqa3swMb2x9qY7vtiUn05wP6eJB0V06Ogy6bE',
+    'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMTA3NDI3MzQ0MDAzMDg5MDIwOTY5In0sImlhdCI6MTcxNTYwNzQxNCwiZXhwIjoxNzE2Njg3NDE0fQ.tz2jZnGjJPZrWZDb6agRLdriV7cPl8xeSmWKYSM-eQw',
     'Content-Type': 'application/json'
 }
 
