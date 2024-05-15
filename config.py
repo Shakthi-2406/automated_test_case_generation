@@ -48,8 +48,6 @@ Input Document: {document}.
 """
 
 
-
-
 equation_example = """{"variables" : ['a', 'b',....],
 "equations" : [{'equation' : 'b = 2*d', 'condition': None},
                 {'equation':  'a = b+c', 'condition': 'b>0'},
@@ -112,14 +110,14 @@ EQUATION_PROMPT_TEMPLATE = f"""
 range_example = """{"ranges": {'d' : (2, 100, 3), 'mode' : ("on", "off"), 'temp' : (3, 7, 1), ... } }"""
 
 range_input_frd = """
-Auto_drift - [0, 1, 0.5]
+Auto_drift - [enable, disable]
 operation - ["fight", "no"]
 curvature - [100, 102, 1]
 """
 
 range_output_frd = """
 ```json{
-'Auto_drift' : (0, 1, 0.5), 
+'Auto_drift' : ("enable", "disable"), 
 'operation' : ("fight", "no"),
 'curvature' : (100, 102, 1)
 }```
