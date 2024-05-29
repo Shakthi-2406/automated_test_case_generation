@@ -8,7 +8,7 @@ model_name = "openai/gpt-4-1106-preview"
 
 url = 'https://api.getknit.ai/v1/router/run'
 headers = {
-    'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMTA3NDI3MzQ0MDAzMDg5MDIwOTY5In0sImlhdCI6MTcxNTYwNzQxNCwiZXhwIjoxNzE2Njg3NDE0fQ.tz2jZnGjJPZrWZDb6agRLdriV7cPl8xeSmWKYSM-eQw',
+    'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMTAxMzg3Mjc1MTM1NzQ4MjIwNjk4In0sImlhdCI6MTcxNjk5NTM1NSwiZXhwIjoxNzE4MDc1MzU1fQ.hMoWKlj2aR4TYYWsQAcVKs8WTU7wEdwtOykffT1Uhw0',
     'Content-Type': 'application/json'
 }
 
@@ -26,7 +26,7 @@ Your task is to analyse the given document.
 You have to return the output in the following JSON format.
     Example 1:
     Input document: "
-    Auto_drift - [0, 1, 0.5]
+    Auto_drift - ["enable", "disable"]
     operation - ["fight", "no"]
     curvature - [100, 102, 1]
     "
@@ -34,7 +34,7 @@ You have to return the output in the following JSON format.
     Output:
       ```json
       {
-                'Auto_drift' : (0, 1, 0.5), 
+                'Auto_drift' : ("enable", "disable"), 
                 'operation' : ("fight", "no"),
                 'curvature' : (100, 102, 1)
       }```
