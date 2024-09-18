@@ -110,9 +110,9 @@ def add_ranges_for_miscellaneous(variables, dependant_variables, independant_var
         warnings.warn(warning)
 
         for miscellaneous_variable in miscellaneous_variables:
-            start = 10
-            end = 20
-            step = 4
+            start = 50
+            end = 100
+            step = 20
             warning = f'Assuming values for {miscellaneous_variable} as {start} to {end} with step {step}'
             print(warning[:])
             ranges[miscellaneous_variable] = [start, end, step]
