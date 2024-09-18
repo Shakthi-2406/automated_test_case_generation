@@ -50,6 +50,12 @@ FRD_input = st.text_area('''Enter the FRD (Functional Requirement Document):''',
     new_time_period = 1/(f0 + deltaf)
     delta_time_period = new_time_period - t0''',placeholder="Copy and paste FRD here...", height=300)
 
+auth_token_input = st.text_area('''Enter the auth token from getknit:''',
+                                '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMTE0MTY3Mzc5MzMxNTY5NTEyNjM2In0sImlhdCI6MTcyNjY4ODc4MywiZXhwIjoxNzI3NzY4NzgzfQ.5Zs3Bqe4qmiYRtxEStQx_irYboksR9QNwundB77at0s''',
+                                placeholder="Copy and paste your token here from https://app.getknit.ai/build",
+                                height=10
+                                )
+
 edge_cases_only = ste.checkbox("Edge Cases Only", True)
 limit = ste.slider("Test cases count", min_value=10, max_value=1000, value=50)
 
@@ -65,7 +71,7 @@ if st.button("Generate Test Cases"):
     while retry_count < retry_limit:
         try:
             with st.spinner("Generating Testcases... Please wait a minute..."):
-                dict_from_few_shot_prompting = get_few_shot_response(FRD=FRD_input)
+                dict_from_few_shot_prompting = get_few_shot_response(FRD=FRD_input, auth_token=auth_token_input)
             break
         except ZeroDivisionError as e:
             retry_count += 1

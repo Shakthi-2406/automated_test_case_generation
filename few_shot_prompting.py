@@ -5,10 +5,11 @@ import copy
 from config import *
 
 model_name = "openai/gpt-4-1106-preview"
+model_name = "anthropic/claude-instant-1"
 
 url = 'https://api.getknit.ai/v1/router/run'
 headers = {
-    'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMTE0MTY3Mzc5MzMxNTY5NTEyNjM2In0sImlhdCI6MTcyNjY4ODc4MywiZXhwIjoxNzI3NzY4NzgzfQ.5Zs3Bqe4qmiYRtxEStQx_irYboksR9QNwundB77at0s',
+    'x-auth-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMTE0MTY3Mzc5MzMxNTY5NTEyNjM2In0sImlhdCI6MTcyNjY4ODc4MywiZXhwIjoxNzI3NzY4NzgzfQ.5Zs3Bqe4qmiYRtxEStQx_irYboksR9QNwundB77at0s",
     'Content-Type': 'application/json'
 }
 
@@ -187,7 +188,10 @@ def pre_process(FRD):
         FRD = FRD.replace(char, ' ')
     return FRD
 
-def get_few_shot_prompting_response(FRD):
+def get_few_shot_prompting_response(
+  FRD,
+  auth_token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMTE0MTY3Mzc5MzMxNTY5NTEyNjM2In0sImlhdCI6MTcyNjY4ODc4MywiZXhwIjoxNzI3NzY4NzgzfQ.5Zs3Bqe4qmiYRtxEStQx_irYboksR9QNwundB77at0s"
+  ):
     global url, headers, data, range_data
     
     part1 = FRD[:FRD.find('_RANGE_END_TAG_')]
@@ -196,6 +200,7 @@ def get_few_shot_prompting_response(FRD):
     range_data_copy = copy.deepcopy(range_data)
         
     # FRD = pre_process(FRD)
+    headers['x-auth-token'] = auth_token
     data_copy['messages'][1]['content'] = data_copy['messages'][1]['content'].format(FRD)
     
     response = requests.post(url, headers=headers, json=data_copy)

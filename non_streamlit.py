@@ -31,6 +31,8 @@ Auto_Drift_Estimate - [enabled, not_enabled]
     deltaf = f0 * delfbyf0
     new_time_period = 1/(f0 + deltaf)
     delta_time_period = new_time_period - t0'''
+    
+auth_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMTE0MTY3Mzc5MzMxNTY5NTEyNjM2In0sImlhdCI6MTcyNjY4ODc4MywiZXhwIjoxNzI3NzY4NzgzfQ.5Zs3Bqe4qmiYRtxEStQx_irYboksR9QNwundB77at0s"
 
 edge_cases_only = True
 limit = 500
@@ -46,7 +48,7 @@ retry_count = 0
 while retry_count < retry_limit:
     try:
         print("Generating Testcases... Please wait a minute...")
-        dict_from_few_shot_prompting = get_few_shot_response(FRD=FRD_input)
+        dict_from_few_shot_prompting = get_few_shot_response(FRD=FRD_input, auth_token=auth_token)
         break
     except error as e:
         retry_count += 1
